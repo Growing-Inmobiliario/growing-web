@@ -1,0 +1,125 @@
+/* ============================================================
+   GROWING INMOBILIARIO · «ESCRITURA» — hoja de estilos de marca
+   v1 · 22-oct-2026 · Todo documento, landing o formulario parte de aquí.
+   Idea: no es una pantalla, es un papel de notaría. Máquina de escribir,
+   texto justificado, cláusulas numeradas, sello y timbre.
+   Uso: <link rel="stylesheet" href="escritura.css"> + estructura del manual.
+   ============================================================ */
+
+/* ── 1. Paleta Templanza (solo estas 7) ── */
+:root{
+  --tinta:#10141F;      /* fondo de mesa, texto fuerte */
+  --papel:#F4F1E8;      /* el papel */
+  --piedra:#EFEDE6;     /* papel alternativo / fondos claros */
+  --laton:#C0A46B;      /* sello, filetes, detalles */
+  --lacre:#B5382A;      /* timbre, botón-sello, errores. UNA cosa por página */
+  --petroleo:#135E6E;   /* foco, enlaces, subrayado activo */
+  --texto:#1B1A17;      /* tinta de máquina */
+  --gris:#6B675E;       /* notas al margen */
+  --linea:#2A2823;      /* líneas de campo */
+  --mono:'Courier Prime','Courier New',Courier,monospace;
+  --ancho:780px;        /* ancho del papel (A4 en pantalla) */
+}
+
+/* ── 2. Base ── */
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--tinta);color:var(--texto);font-family:var(--mono);font-size:16px;line-height:1.75;-webkit-font-smoothing:antialiased}
+@media (max-width:640px){ html,body{font-size:15px} }
+a{color:var(--petroleo);text-decoration:underline;text-underline-offset:3px}
+p{margin:14px 0;text-align:justify}
+b,strong{font-weight:700}
+img{max-width:100%;filter:grayscale(1) contrast(1.05)}   /* las fotos van en blanco y negro, como en un expediente */
+
+/* ── 3. La mesa y el papel ── */
+.mesa{min-height:100vh;padding:28px 12px 60px;display:flex;flex-direction:column;align-items:center;gap:28px}
+.papel{
+  width:100%;max-width:var(--ancho);position:relative;
+  background:radial-gradient(ellipse at 20% 0%,rgba(255,255,255,.55),transparent 55%),
+             radial-gradient(ellipse at 90% 100%,rgba(120,100,60,.08),transparent 50%),var(--papel);
+  box-shadow:0 30px 60px rgba(0,0,0,.55),0 2px 0 rgba(255,255,255,.25) inset;
+  padding:48px 56px 40px;
+}
+.papel:before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:repeating-linear-gradient(180deg,transparent 0 14px,rgba(0,0,0,.06) 14px 16px)}
+@media (max-width:640px){ .papel{padding:34px 20px 30px} }
+.papel--piedra{background:var(--piedra)}
+.numpag{position:absolute;bottom:14px;left:0;right:0;text-align:center;font-size:.8rem;color:var(--gris)}
+
+/* ── 4. Cabecera notarial ── */
+.cab{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start;margin-bottom:10px}
+.cab .marca{font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:.95rem}
+.cab .marca small{display:block;font-weight:400;letter-spacing:.08em;font-size:.72rem;color:var(--gris)}
+.cab .folio{text-align:right;font-size:.85rem;letter-spacing:.08em}
+.cab .folio b{display:block;font-size:1.05rem}
+.asteriscos{overflow:hidden;white-space:nowrap;letter-spacing:.05em;color:var(--linea);margin:6px 0;user-select:none}
+.reg{display:flex;flex-wrap:wrap;gap:0 24px;font-size:.85rem;letter-spacing:.06em}
+
+/* ── 5. Títulos y partes ── */
+h1,.h1{font-size:1.05rem;letter-spacing:.22em;text-transform:uppercase;text-align:center;margin:26px 0 6px;font-weight:700}
+.partes{text-align:center;letter-spacing:.12em;text-transform:uppercase;font-size:.95rem;line-height:1.5}
+.partes .a{display:block;font-size:.8rem;letter-spacing:.3em;color:var(--gris);margin:2px 0}
+h2,.h2{font-size:1rem;letter-spacing:.14em;text-transform:uppercase;margin:0 0 6px;font-weight:700}
+h2 span,.h2 span{color:var(--gris);font-weight:400;letter-spacing:.04em;text-transform:none;font-size:.85rem;display:block}
+
+/* ── 6. Cláusulas (toda sección de una landing es una cláusula) ── */
+.clausula{margin:26px 0 0}
+.clausula .porque,.margen{font-size:.85rem;color:var(--gris);margin:0 0 8px}
+.nombre-propio{font-weight:700;text-transform:uppercase}   /* nombres de personas y empresas, como en la escritura */
+
+/* ── 7. Sello (latón) y timbre (lacre) ── */
+.sello{width:118px;height:118px;position:absolute;right:28px;top:22px;transform:rotate(-12deg);opacity:.9;pointer-events:none}
+@media (max-width:640px){ .sello{width:84px;height:84px;right:14px;top:12px} }
+.timbre{border:3px double var(--lacre);color:var(--lacre);padding:12px 16px;margin:28px 0 8px;text-align:center;
+  letter-spacing:.08em;text-transform:uppercase;font-size:.82rem;line-height:1.6;transform:rotate(-1deg);background:rgba(181,56,42,.04)}
+.timbre b{display:block;font-size:.95rem;letter-spacing:.14em}
+.filete{border:0;border-top:1px solid var(--laton);margin:28px 0}
+
+/* ── 8. Formularios: campos como líneas de máquina ── */
+.campo{width:100%;border:0;border-bottom:2px solid var(--linea);background:transparent;font:inherit;color:var(--texto);padding:6px 2px;outline:none;border-radius:0}
+.campo:focus{border-bottom-color:var(--petroleo);background:rgba(19,94,110,.05)}
+textarea.campo{resize:vertical;min-height:72px;line-height:1.6;background-image:repeating-linear-gradient(transparent 0 calc(1.6em - 2px),rgba(0,0,0,.12) calc(1.6em - 2px) 1.6em);background-attachment:local}
+.dos{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media (max-width:520px){ .dos{grid-template-columns:1fr} }
+.dos label{display:block;font-size:.85rem;color:var(--gris);letter-spacing:.04em}
+.opcion{display:flex;gap:12px;align-items:flex-start;padding:8px 6px;cursor:pointer;border-left:3px solid transparent;position:relative}
+.opcion:hover{background:rgba(0,0,0,.035)}
+.opcion input{position:absolute;opacity:0;width:0;height:0}
+.caja{flex:0 0 auto;width:20px;height:20px;border:2px solid var(--linea);margin-top:4px;display:grid;place-items:center;font-size:15px;line-height:1;background:#fff}
+.opcion input:checked ~ .caja{background:var(--tinta);color:var(--papel);border-color:var(--tinta)}
+.opcion input:checked ~ .caja:after{content:"X"}
+.opcion input:focus-visible ~ .caja{outline:3px solid var(--petroleo);outline-offset:2px}
+.opcion input[type=radio] ~ .caja{border-radius:50%}
+.opcion input[type=radio]:checked ~ .caja:after{content:"●";font-size:11px}
+.opcion span.t{flex:1}
+.error{color:var(--lacre);font-size:.85rem;margin:6px 0 0;display:none}
+.error.on{display:block}
+
+/* ── 9. Botón-sello (la única llamada a la acción de la página) ── */
+.sellar{font:inherit;font-weight:700;letter-spacing:.2em;text-transform:uppercase;background:var(--lacre);color:var(--papel);
+  border:0;padding:18px 28px;cursor:pointer;display:inline-block;text-decoration:none;max-width:100%;
+  box-shadow:0 6px 0 #7f2419,0 14px 24px rgba(0,0,0,.25);transform:rotate(-1.5deg);transition:transform .08s,box-shadow .08s}
+.sellar:hover{transform:rotate(-1.5deg) translateY(-1px)}
+.sellar:active{transform:rotate(-1.5deg) translateY(4px);box-shadow:0 2px 0 #7f2419,0 6px 10px rgba(0,0,0,.25)}
+.sellar:focus-visible{outline:3px solid var(--petroleo);outline-offset:4px}
+.sellar[disabled]{opacity:.6;cursor:wait}
+.sellar--laton{background:var(--laton);color:var(--tinta);box-shadow:0 6px 0 #8c7546,0 14px 24px rgba(0,0,0,.25)}  /* secundario */
+.pie{margin-top:36px;text-align:center}
+.nota-pie{font-size:.78rem;color:var(--gris);text-align:center;margin-top:18px;letter-spacing:.04em}
+
+/* ── 10. Tablas (números, precios, comparativas): libro de cuentas ── */
+table.cuentas{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;margin:14px 0}
+table.cuentas th,table.cuentas td{padding:8px 6px;border-bottom:1px solid rgba(0,0,0,.18);text-align:left;vertical-align:top}
+table.cuentas th{font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gris);font-weight:700}
+table.cuentas td.num,table.cuentas th.num{text-align:right}
+.scroll-x{overflow-x:auto}
+
+/* ── 11. Vídeo (VSL, Juanca, testimonios): como una foto pegada al expediente ── */
+.video{border:1px solid var(--linea);padding:8px;background:#fff;box-shadow:0 4px 10px rgba(0,0,0,.15);transform:rotate(.6deg);margin:18px auto}
+.video iframe,.video video{display:block;width:100%;aspect-ratio:16/9;border:0;background:#000}
+.video figcaption{font-size:.8rem;color:var(--gris);margin-top:6px;letter-spacing:.04em;text-transform:uppercase}
+
+/* ── 12. Utilidades ── */
+.centro{text-align:center}
+.mayus{text-transform:uppercase;letter-spacing:.12em}
+.oculto{display:none}
+@media (prefers-reduced-motion:reduce){ *{transition:none!important} }
+@media print{ html,body{background:#fff} .mesa{padding:0} .papel{box-shadow:none;max-width:none} .sellar{display:none} }

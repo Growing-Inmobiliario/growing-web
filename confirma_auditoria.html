@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Confirmación de auditoría · Growing Inmobiliario</title>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --tinta:#10141F; --laton:#C0A46B; --lacre:#B5382A; --petroleo:#135E6E;
+    --texto:#1B1A17; --linea:#2A2823; --gris:#6B675E;
+    --mono:'Courier Prime','Courier New',Courier,monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:#FFFFFF;color:var(--texto);font-family:var(--mono);font-size:16px;line-height:1.75;color-scheme:light}
+  .mesa{min-height:100vh;padding:36px 12px 56px;display:flex;justify-content:center;align-items:flex-start}
+  /* la hoja: blanca, con un grano de papel casi imperceptible y una sombra suave */
+  .papel{width:100%;max-width:720px;position:relative;background:#FFFFFF;
+    box-shadow:0 1px 2px rgba(0,0,0,.08),0 12px 40px rgba(0,0,0,.10);border:1px solid #E6E3DC;
+    padding:52px 64px 44px;min-height:760px;display:flex;flex-direction:column}
+  .papel:after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.08 0 0 0 0 0.05 0 0 0 .045 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  @media (max-width:640px){ .mesa{padding:0} .papel{padding:28px 20px 30px;min-height:100vh;border:0;box-shadow:none} html,body{font-size:15px} }
+
+  /* membrete */
+  .membrete{display:grid;grid-template-columns:1fr auto;align-items:end;gap:16px;padding-right:110px}
+  @media (max-width:640px){ .membrete{padding-right:76px;grid-template-columns:1fr;align-items:start} }
+  .membrete img{width:190px;height:auto;display:block}
+  @media (max-width:640px){ .membrete img{width:150px} }
+  .membrete .sub{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gris);margin-top:6px}
+  .folio{text-align:right;font-size:.85rem;letter-spacing:.08em;line-height:1.4}
+  .folio b{display:block;font-size:1.05rem}
+  @media (max-width:640px){ .folio{text-align:left} }
+  .sello{width:112px;height:112px;position:absolute;right:30px;top:26px;transform:rotate(-12deg);opacity:.85;pointer-events:none;mix-blend-mode:multiply}
+  @media (max-width:640px){ .sello{width:78px;height:78px;right:12px;top:12px} }
+  .asteriscos{overflow:hidden;white-space:nowrap;letter-spacing:.05em;color:var(--linea);margin:10px 0 2px;user-select:none;font-size:.9rem}
+  .reg{display:flex;flex-wrap:wrap;justify-content:space-between;gap:0 20px;font-size:.82rem;letter-spacing:.06em}
+
+  /* escenario */
+  .escena{flex:1;margin-top:6px}
+  .paso{display:none;animation:entra .25s ease-out}
+  .paso.on{display:block}
+  @keyframes entra{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  h1{font-size:1.05rem;letter-spacing:.22em;text-transform:uppercase;text-align:center;margin:30px 0 8px;font-weight:700}
+  .partes{text-align:center;letter-spacing:.12em;text-transform:uppercase;font-size:.95rem;line-height:1.6}
+  .partes .a{display:block;font-size:.8rem;letter-spacing:.3em;color:var(--gris);margin:2px 0}
+  p{margin:14px 0;text-align:justify}
+  .np{font-weight:700;text-transform:uppercase}
+
+  /* cláusulas */
+  .clausula{margin:28px 0 10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:.95rem}
+  .pregunta{font-weight:700;font-size:1.12rem;line-height:1.5;margin:0 0 6px;text-align:left}
+  .contexto{font-size:.9rem;color:var(--gris);margin:0 0 16px;text-align:justify}
+
+  /* campos: recuadros finos, como en un impreso de notaría */
+  .campo{width:100%;border:1px solid var(--linea);background:#FFFFFF;font:inherit;color:var(--texto);padding:14px 16px;outline:none;border-radius:0;min-height:56px;font-size:1.02rem}
+  .campo::placeholder{color:#A09B90}
+  .campo:focus{border-color:var(--petroleo);box-shadow:0 0 0 3px rgba(19,94,110,.12)}
+  textarea.campo{resize:vertical;min-height:150px;line-height:1.6}
+  .dos{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media (max-width:520px){ .dos{grid-template-columns:1fr} }
+  .dos label{display:block;font-size:.85rem;color:var(--gris);letter-spacing:.04em;margin-bottom:4px}
+  .euro{position:relative}
+  .euro:after{content:"€";position:absolute;right:16px;top:50%;transform:translateY(-50%);color:var(--gris)}
+  .opcion{display:flex;gap:14px;align-items:flex-start;padding:14px 16px;cursor:pointer;border:1px solid var(--linea);background:#FFFFFF;margin:0 0 10px;position:relative;font-size:1.02rem}
+  .opcion:hover{background:#FAFAF8}
+  .opcion input{position:absolute;opacity:0;width:0;height:0}
+  .caja{flex:0 0 auto;width:22px;height:22px;border:1.5px solid var(--linea);margin-top:3px;display:grid;place-items:center;font-size:16px;line-height:1;background:#fff}
+  .opcion:has(input:checked){border-color:var(--tinta);border-width:2px;padding:13px 15px}
+  .opcion input:checked ~ .caja:after{content:"X";font-weight:700}
+  .opcion input:focus-visible ~ .caja{outline:3px solid var(--petroleo);outline-offset:2px}
+  .opcion input[type=radio] ~ .caja{border-radius:50%}
+  .opcion input[type=radio]:checked ~ .caja:after{content:"●";font-size:12px}
+  .opcion span.t{flex:1}
+  .compromiso .opcion{font-size:.98rem;line-height:1.6}
+  .error{color:var(--lacre);font-size:.9rem;margin:8px 0 0;display:none;font-weight:700}
+  .error.on{display:block}
+
+  /* navegación: sobria */
+  .nav{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-top:26px;flex-wrap:wrap}
+  .btn{font:inherit;font-weight:700;letter-spacing:.16em;text-transform:uppercase;border:1.5px solid var(--tinta);background:#FFFFFF;color:var(--tinta);padding:14px 24px;cursor:pointer;border-radius:0}
+  .btn:hover{background:var(--tinta);color:#fff}
+  .btn:focus-visible{outline:3px solid var(--petroleo);outline-offset:3px}
+  .btn.atras{border-color:#B8B4AA;color:var(--gris)}
+  .btn.atras:hover{background:transparent;color:var(--texto);border-color:var(--texto)}
+  .btn.principal{background:var(--tinta);color:#fff;flex:1;text-align:center}
+  .pista{font-size:.76rem;color:var(--gris);letter-spacing:.04em;width:100%;text-align:right}
+  button.sellar{font:inherit;font-weight:700;letter-spacing:.2em;text-transform:uppercase;background:var(--lacre);color:#fff;border:0;padding:20px 30px;cursor:pointer;width:100%;
+    box-shadow:0 5px 0 #7f2419,0 12px 22px rgba(0,0,0,.18);transform:rotate(-1.2deg);transition:transform .08s,box-shadow .08s;margin-top:20px}
+  button.sellar:hover{transform:rotate(-1.2deg) translateY(-1px)}
+  button.sellar:active{transform:rotate(-1.2deg) translateY(4px);box-shadow:0 1px 0 #7f2419,0 5px 10px rgba(0,0,0,.2)}
+  button.sellar:focus-visible{outline:3px solid var(--petroleo);outline-offset:4px}
+  button[disabled]{opacity:.6;cursor:wait}
+  .nota-pie{font-size:.76rem;color:var(--gris);text-align:center;margin-top:16px;letter-spacing:.04em}
+  .numpag{text-align:center;font-size:.8rem;color:var(--gris);margin-top:auto;padding-top:22px}
+
+  .hecho{text-align:center;padding:24px 0 10px}
+  .hecho h2{letter-spacing:.2em;text-transform:uppercase;font-size:1.05rem}
+  .hecho .ok{width:150px;height:150px;margin:0 auto 14px;transform:rotate(8deg);mix-blend-mode:multiply}
+  .hecho p{text-align:center}
+  @media (prefers-reduced-motion:reduce){ *{transition:none!important;animation:none!important} }
+  @media print{ .mesa{padding:0} .papel{box-shadow:none;border:0;max-width:none} .btn,button.sellar{display:none} }
+</style>
+</head>
+<body>
+<div class="mesa">
+<main class="papel" id="papel">
+
+  <svg class="sello" viewBox="0 0 120 120" aria-hidden="true">
+    <defs><path id="arco" d="M60,60 m-44,0 a44,44 0 1,1 88,0 a44,44 0 1,1 -88,0"/></defs>
+    <circle cx="60" cy="60" r="56" fill="none" stroke="#C0A46B" stroke-width="2.5"/>
+    <circle cx="60" cy="60" r="50" fill="none" stroke="#C0A46B" stroke-width="1"/>
+    <text font-family="Courier Prime, Courier New, monospace" font-size="9.2" font-weight="700" fill="#C0A46B" letter-spacing="1.6"><textPath href="#arco" startOffset="0">GROWING INMOBILIARIO · AUDITORÍA PERSONALIZADA · </textPath></text>
+    <text x="60" y="56" text-anchor="middle" font-family="Courier Prime, Courier New, monospace" font-size="11" font-weight="700" fill="#C0A46B">CONFIRMADA</text>
+    <text x="60" y="71" text-anchor="middle" font-family="Courier Prime, Courier New, monospace" font-size="8" fill="#C0A46B" id="selloFecha">— —</text>
+  </svg>
+
+  <header class="membrete">
+    <div><img src="logo_growing.png" alt="Growing Inmobiliario"><div class="sub">Auditorías personalizadas · España</div></div>
+    <div class="folio">FOJAS<b id="folio">— —</b></div>
+  </header>
+  <div class="asteriscos" aria-hidden="true">********************************************************************************</div>
+  <div class="reg"><span>REG. AUD. Nº <b id="regnum">———</b></span><span>CITA: <b id="regfecha">— —</b></span><span id="pasoDe"></span></div>
+  <div class="asteriscos" aria-hidden="true">********************************************************************************</div>
+
+  <form id="f" novalidate class="escena">
+
+    <!-- 0: portada -->
+    <section class="paso on" data-p="0">
+      <h1>Confirmación de auditoría</h1>
+      <div class="partes"><span id="parteNombre">——————</span><span class="a">a</span>Growing Inmobiliario</div>
+      <p>En España, a <span id="hoyTexto">día de hoy</span>, comparece <span class="np" id="proNombre">quien suscribe</span>, titular de su inmobiliaria,
+        en adelante <b>«la Compareciente»</b>, quien declara haber reservado una <b>auditoría personalizada de su negocio</b> con
+        <span class="np">Growing Inmobiliario</span>, en adelante <b>«la Auditora»</b>, para el <b id="proDia">día de la cita</b> a las
+        <b id="proHora">hora acordada</b>, con el fin de <b>hacer crecer su inmobiliaria</b>.</p>
+      <p>A tal efecto, la Compareciente deja constancia de lo que sigue en seis cláusulas, que la Auditora empleará para preparar su caso.
+        Cumplimentado este documento, la Auditora hará entrega del manual <b>«Las etapas de crecimiento de una inmobiliaria»</b>.</p>
+      <div class="nav"><button type="button" class="btn principal" data-sig>Comparecer</button></div>
+    </section>
+
+    <!-- 1 -->
+    <section class="paso" data-p="1">
+      <div class="clausula">Primero.- Del problema</div>
+      <p class="pregunta">Si en esta hora resolviéramos un solo problema y ese problema multiplicara tu negocio, ¿cuál sientes que es?</p>
+      <p class="contexto">Marca el que de verdad te frena.</p>
+      <label class="opcion"><input type="radio" name="problema" value="No consigo noticias de propietarios que quieran vender y dependo de referidos"><span class="caja"></span><span class="t">No consigo noticias de propietarios que quieran vender y dependo principalmente de referidos</span></label>
+      <label class="opcion"><input type="radio" name="problema" value="Tengo citas de captación pero no cerramos exclusivas en precio"><span class="caja"></span><span class="t">Tengo citas de captación, pero mi equipo o yo no cerramos las propiedades necesarias en exclusiva y en precio</span></label>
+      <label class="opcion"><input type="radio" name="problema" value="Necesito gente en el equipo y no tengo procesos de contratación"><span class="caja"></span><span class="t">Necesito nuevas personas en mi equipo para lograr los objetivos y no tengo buenos procesos de contratación</span></label>
+      <label class="opcion"><input type="radio" name="problema" value="No sé dónde está mi principal problema"><span class="caja"></span><span class="t">No sé dónde está ahora mismo mi principal problema</span></label>
+      <label class="opcion"><input type="radio" name="problema" value="Otro"><span class="caja"></span><span class="t">Otro</span></label>
+      <input class="campo oculto" id="otro" name="problema_otro" placeholder="Escribe cuál…" style="display:none;margin-top:-2px;margin-bottom:10px">
+      <p class="contexto" style="margin-top:14px">Si quieres, añade lo que hoy frena el crecimiento de tu inmobiliaria. Cuanto más sepamos, mejor preparamos tu caso. <i>(opcional)</i></p>
+      <textarea class="campo" name="motivo" placeholder="– Captación inestable&#10;– Dependo de referidos&#10;– …" style="min-height:110px"></textarea>
+      <p class="error">Marca una opción (y si es «Otro», escribe cuál).</p>
+      <div class="nav"><button type="button" class="btn atras" data-ant>Atrás</button><button type="button" class="btn principal" data-sig>Siguiente</button></div>
+    </section>
+
+    <!-- 2 -->
+    <section class="paso" data-p="2">
+      <div class="clausula">Segundo.- De los números</div>
+      <p class="pregunta">Tus dos números de los últimos tres (3) meses.</p>
+      <p class="contexto">Una aproximación vale. Estos datos no se usan para nada más: sirven para orientar la reunión e ir directos a tu problema.</p>
+      <div class="dos">
+        <div><label for="capt">Captaciones (unidades)</label><input class="campo" id="capt" name="captaciones" type="number" min="0" step="1" inputmode="numeric" placeholder="Ej. 12"></div>
+        <div><label for="fact">Facturación (€)</label><div class="euro"><input class="campo" id="fact" name="facturacion" type="number" min="0" step="1" inputmode="numeric" placeholder="Ej. 45000"></div></div>
+      </div>
+      <p class="error">Pon los dos números, aunque sean cero.</p>
+      <div class="nav"><button type="button" class="btn atras" data-ant>Atrás</button><button type="button" class="btn principal" data-sig>Siguiente</button><span class="pista">Enter para seguir</span></div>
+    </section>
+
+    <!-- 3 -->
+    <section class="paso" data-p="3">
+      <div class="clausula">Tercero.- De quién comparece a la reunión</div>
+      <p class="pregunta">¿Quién decide en tu inmobiliaria?</p>
+      <p class="contexto">Los mejores resultados los conseguimos cuando todos los socios están alineados desde el primer día. Si un socio no puede estar en la reunión, buscaremos otra fecha en la que estéis todos, para asegurar el éxito de cada cliente.</p>
+      <label class="opcion"><input type="radio" name="decisor" value="Yo"><span class="caja"></span><span class="t">Yo</span></label>
+      <label class="opcion"><input type="radio" name="decisor" value="Mi socio/a y yo, y venimos los dos a la reunión"><span class="caja"></span><span class="t">Mi socio/a y yo, y venimos los dos a la reunión</span></label>
+      <p class="error">Marca una opción.</p>
+      <div class="nav"><button type="button" class="btn atras" data-ant>Atrás</button><button type="button" class="btn principal" data-sig>Siguiente</button></div>
+    </section>
+
+    <!-- 4 -->
+    <section class="paso" data-p="4">
+      <div class="clausula">Cuarto.- De los imprevistos</div>
+      <p class="pregunta">Si el <span class="dia">día de la cita</span> a las <span class="hora">hora acordada</span> te surge una visita, una firma o un cliente, ¿qué harás?</p>
+      <label class="opcion"><input type="radio" name="si_surge" value="Mantengo la reunión y muevo lo otro"><span class="caja"></span><span class="t">Mantengo la reunión y muevo lo otro</span></label>
+      <label class="opcion"><input type="radio" name="si_surge" value="Aviso con 24 horas y la cambiamos (solo una vez)"><span class="caja"></span><span class="t">Os aviso con veinticuatro (24) horas de antelación y la cambiamos, una sola vez</span></label>
+      <p class="error">Marca una opción.</p>
+      <div class="nav"><button type="button" class="btn atras" data-ant>Atrás</button><button type="button" class="btn principal" data-sig>Siguiente</button></div>
+    </section>
+
+    <!-- 5 -->
+    <section class="paso" data-p="5">
+      <div class="clausula">Quinto.- De la disposición</div>
+      <p class="pregunta">El <span class="dia">día de la cita</span> a las <span class="hora">hora acordada</span> estaré…</p>
+      <p class="contexto">Marca las dos. Una auditoría desde el coche con el móvil no sirve de nada.</p>
+      <label class="opcion"><input type="checkbox" name="prep" value="ordenador con cámara"><span class="caja"></span><span class="t">En un ordenador con cámara</span></label>
+      <label class="opcion"><input type="checkbox" name="prep" value="sitio tranquilo"><span class="caja"></span><span class="t">En un sitio tranquilo</span></label>
+      <p class="error">Las dos son necesarias.</p>
+      <div class="nav"><button type="button" class="btn atras" data-ant>Atrás</button><button type="button" class="btn principal" data-sig>Siguiente</button></div>
+    </section>
+
+    <!-- 6 -->
+    <section class="paso" data-p="6">
+      <div class="clausula">Sexto.- De la firma</div>
+      <p class="pregunta">Nombre y apellidos</p>
+      <input class="campo" name="firma" id="firma" autocomplete="name" placeholder="Nombre y apellidos">
+      <p class="error" id="errFirma">Escribe tu nombre.</p>
+      <div class="compromiso" style="margin-top:14px">
+        <label class="opcion"><input type="checkbox" name="compromiso" value="si"><span class="caja"></span>
+          <span class="t"><b>Yo, <span id="yoNombre">——————</span>,</b> entiendo que esta cita es importante para mí y confirmo mi asistencia.
+          También entiendo que si no aparezco sin avisar o cancelo a última hora sin motivo, no podré volver a acceder a una auditoría personalizada de mi negocio con Growing Inmobiliario.</span></label>
+        <p class="error" id="errComp">Para confirmar hay que marcar la casilla.</p>
+      </div>
+      <button class="sellar" type="submit" id="btn">Confirmo mi auditoría</button>
+      <div class="nav"><button type="button" class="btn atras" data-ant>Atrás</button></div>
+      <p class="nota-pie">Este documento no tiene valor legal. Tiene valor de palabra.</p>
+    </section>
+
+    <!-- 7: hecho -->
+    <section class="paso hecho" data-p="7">
+      <svg class="ok" viewBox="0 0 120 120" aria-hidden="true">
+        <circle cx="60" cy="60" r="56" fill="none" stroke="#B5382A" stroke-width="3"/><circle cx="60" cy="60" r="49" fill="none" stroke="#B5382A" stroke-width="1"/>
+        <text x="60" y="56" text-anchor="middle" font-family="Courier Prime, Courier New, monospace" font-size="12" font-weight="700" fill="#B5382A">CONFIRMADA</text>
+        <text x="60" y="72" text-anchor="middle" font-family="Courier Prime, Courier New, monospace" font-size="9" fill="#B5382A" id="okFecha">— —</text>
+      </svg>
+      <h2>Hecho, <span id="okNombre">——</span>.</h2>
+      <p>Tu hora está reservada y tu caso en preparación.<br>En un momento te llega por WhatsApp el manual <b>«Las etapas de crecimiento de una inmobiliaria»</b>.</p>
+      <p id="redirigiendo" style="color:var(--gris);font-size:.85rem"></p>
+    </section>
+  </form>
+
+  <div class="numpag" id="numpag">1</div>
+</main>
+</div>
+
+<script>
+/* ── CONFIGURACIÓN (Juanca) ─────────────────────────────────────────────────
+   WEBHOOK_URL : "Inbound Webhook" del workflow de GHL que recibe las respuestas y rellena los campos del contacto.
+   GRACIAS_URL : página de gracias (manual + vídeo de Juanca). Vacía = se muestra "Hecho" aquí mismo.
+   Enlace que manda GHL: https://TU-DOMINIO/confirma?nombre={{contact.first_name}}&apellidos={{contact.last_name}}&cid={{contact.id}}&email={{contact.email}}&tel={{contact.phone}}&dia={{appointment.start_time}}   */
+const CONFIG = { WEBHOOK_URL: "", GRACIAS_URL: "" };
+
+const q = new URLSearchParams(location.search);
+const nombre = [q.get('nombre')||'', q.get('apellidos')||''].join(' ').trim();
+const DIAS=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'], MESES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+function fecha(raw, horaRaw){
+  let d=null; if(raw){ const m=raw.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})(?:[ T](\d{1,2}):(\d{2}))?/); if(m) d=new Date(+m[3],+m[2]-1,+m[1],+(m[4]||0),+(m[5]||0)); else { const t=new Date(raw); if(!isNaN(t)) d=t; } }
+  const dia = d ? `${DIAS[d.getDay()]} ${d.getDate()} de ${MESES[d.getMonth()]}` : (raw||'');
+  const hora = horaRaw || (d && (d.getHours()||d.getMinutes()) ? `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}` : '');
+  return {dia, hora};
+}
+const F = fecha(q.get('dia'), q.get('hora'));
+const hoy=new Date(); const hoyTxt=`${hoy.getDate()}·${String(hoy.getMonth()+1).padStart(2,'0')}·${hoy.getFullYear()}`;
+document.getElementById('hoyTexto').textContent=`${hoy.getDate()} de ${MESES[hoy.getMonth()]} de ${hoy.getFullYear()}`;
+document.getElementById('folio').textContent = `${hoy.getFullYear()}.${String(hoy.getMonth()+1).padStart(2,'0')}${String(hoy.getDate()).padStart(2,'0')}`;
+document.getElementById('regnum').textContent = (q.get('cid')||'').slice(-6).toUpperCase() || '———';
+document.getElementById('regfecha').textContent = F.dia ? `${F.dia}${F.hora?' · '+F.hora:''}` : '— —';
+document.getElementById('selloFecha').textContent = hoyTxt; document.getElementById('okFecha').textContent = hoyTxt;
+if(nombre){ document.getElementById('parteNombre').textContent=nombre; document.getElementById('proNombre').textContent=nombre; document.getElementById('firma').value=nombre; }
+if(F.dia){ document.getElementById('proDia').textContent=F.dia; document.querySelectorAll('.dia').forEach(e=>e.textContent=F.dia); }
+if(F.hora){ document.getElementById('proHora').textContent=F.hora; document.querySelectorAll('.hora').forEach(e=>e.textContent=F.hora); }
+
+const form=document.getElementById('f'), firma=document.getElementById('firma'), yo=document.getElementById('yoNombre');
+const pasos=[...form.querySelectorAll('.paso')]; let actual=0;
+const ORD=['','primera','segunda','tercera','cuarta','quinta','sexta'];
+const valida=[
+  null,
+  ()=>{ const v=form.problema.value; return !!v && (v!=='Otro' || document.getElementById('otro').value.trim().length>0); },
+  ()=>form.captaciones.value!=='' && form.facturacion.value!=='',
+  ()=>!!form.decisor.value,
+  ()=>!!form.si_surge.value,
+  ()=>form.querySelectorAll('input[name=prep]:checked').length===2,
+  ()=>{ const a=firma.value.trim().length>0, b=form.querySelector('input[name=compromiso]').checked;
+        document.getElementById('errFirma').classList.toggle('on',!a); document.getElementById('errComp').classList.toggle('on',!b); return a&&b; },
+];
+function muestra(n){
+  actual=n; pasos.forEach(p=>p.classList.toggle('on', +p.dataset.p===n));
+  document.getElementById('pasoDe').textContent = (n>=1&&n<=6) ? `CLÁUSULA ${ORD[n].toUpperCase()} · ${n} DE 6` : '';
+  document.getElementById('numpag').textContent = n>=1 && n<=6 ? n+1 : (n===7 ? 8 : 1);
+  window.scrollTo({top:0,behavior:'smooth'});
+  const foco=pasos[n].querySelector('textarea,input:not([type=radio]):not([type=checkbox])'); if(foco && n>1) setTimeout(()=>foco.focus(),120);
+}
+function siguiente(){
+  if(actual>=1 && actual<=5){ const ok=valida[actual](); const err=pasos[actual].querySelector('.error'); if(err) err.classList.toggle('on',!ok); if(!ok) return; }
+  muestra(actual+1);
+}
+form.addEventListener('click',e=>{ if(e.target.matches('[data-sig]')) siguiente(); if(e.target.matches('[data-ant]')) muestra(actual-1); });
+form.addEventListener('input',()=>{ yo.textContent = firma.value.trim() || '——————'; const err=pasos[actual].querySelector('.error'); if(err && valida[actual] && actual<6 && valida[actual]()) err.classList.remove('on'); });
+form.addEventListener('change',e=>{ if(e.target.name==='problema'){ const o=document.getElementById('otro'); o.style.display = e.target.value==='Otro' ? 'block' : 'none'; if(e.target.value==='Otro') o.focus(); }
+  if(e.target.type==='radio' && actual>=3 && actual<=4) setTimeout(siguiente,220); });
+form.addEventListener('keydown',e=>{ if(e.key==='Enter' && actual>=1 && actual<=5){ const ta=e.target.tagName==='TEXTAREA'; if(!ta || e.metaKey || e.ctrlKey){ e.preventDefault(); siguiente(); } } });
+yo.textContent = firma.value.trim() || '——————';
+
+form.addEventListener('submit', async ev=>{
+  ev.preventDefault(); if(!valida[6]()) return;
+  const datos={ cid:q.get('cid')||'', email:q.get('email')||'', tel:q.get('tel')||'', nombre_url:nombre, dia:F.dia, hora:F.hora,
+    problema:(form.problema.value==='Otro'? 'Otro: '+document.getElementById('otro').value.trim() : form.problema.value), frenos:form.motivo.value.trim(), captaciones_trimestre:+form.captaciones.value, facturacion_trimestre:+form.facturacion.value,
+    decisor:form.decisor.value, si_surge:form.si_surge.value, preparado:'Sí', firma:firma.value.trim(), compromiso:'Sí', formulario:'Sí', enviado:new Date().toISOString() };
+  const btn=document.getElementById('btn'); btn.disabled=true; btn.textContent='Sellando…';
+  try{ if(CONFIG.WEBHOOK_URL){ await fetch(CONFIG.WEBHOOK_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(datos)}); } }catch(e){}
+  document.getElementById('okNombre').textContent = (firma.value.trim().split(' ')[0]) || 'gracias';
+  muestra(7);
+  if(CONFIG.GRACIAS_URL){ document.getElementById('redirigiendo').textContent='Te llevamos a tu manual…'; const u=new URL(CONFIG.GRACIAS_URL); if(datos.cid) u.searchParams.set('cid',datos.cid); setTimeout(()=>location.href=u.toString(),1800); }
+});
+muestra(0);
+</script>
+</body>
+</html>
